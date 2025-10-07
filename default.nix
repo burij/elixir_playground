@@ -17,9 +17,9 @@ let
   shell = pkgs.mkShell {
     buildInputs = [ elixirEnv dependencies ];
     shellHook = ''
-      alias run='iex'
-
+      alias run='cd play_app && iex'
       nixpkgs-fmt default.nix
+      cd play_app && mix format && cd ..
     '';
   };
 
