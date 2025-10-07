@@ -8,11 +8,11 @@ defmodule PlayApp do
 
   ## Examples
 
-      iex> PlayApp.hello()
-      :world
+      iex> PlayApp.run()
+      "hello world!"
 
   """
-  def hello do
-    :world
+  def run do
+    "hello world!"
   end
 end
