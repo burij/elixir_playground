@@ -14,7 +14,7 @@ defmodule PlayApp do
   """
   def run do
     hello = "hello world!"
-    IO.inspect(hello)
+    IO.puts(hello)
     hello
   end
 end
