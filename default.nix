@@ -17,9 +17,11 @@ let
   shell = pkgs.mkShell {
     buildInputs = [ elixirEnv dependencies ];
     shellHook = ''
-      alias run='cd play_app && iex'
+      alias run='iex'
+      alias make='cd .. && nix-build -A package; cd play_app'
       nixpkgs-fmt default.nix
-      cd play_app && mix format && cd ..
+      cd play_app
+      mix format
     '';
   };
 
@@ -27,7 +29,7 @@ let
     pname = appName;
     version = appVersion;
 
-    src = ./.;
+    src = ./play_app/.;
 
     nativeBuildInputs = [ pkgs.makeWrapper ];
     buildInputs = [ elixirEnv ];
