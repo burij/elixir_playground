@@ -17,8 +17,8 @@ let
   shell = pkgs.mkShell {
     buildInputs = [ elixirEnv dependencies ];
     shellHook = ''
-      alias run='mix eval "PlayApp.run"'
-      alias app='iex -S mix'
+      alias run='mix menu'
+      alias repl='iex -S mix'
       alias make='cd .. && nix-build -A package; cd play_app'
       nixpkgs-fmt default.nix
       cd play_app

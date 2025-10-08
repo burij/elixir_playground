@@ -8,13 +8,12 @@ defmodule PlayApp do
 
   ## Examples
 
-      iex> PlayApp.run()
+      iex> PlayApp.hello()
       "hello world!"
 
   """
-  def run do
+  def hello do
     hello = "hello world!"
-    IO.puts(hello)
     hello
   end
 end
