@@ -19,9 +19,8 @@ let
     shellHook = ''
       alias run='mix menu'
       alias repl='iex -S mix'
-      alias make='cd .. && nix-build -A package; cd play_app'
+      alias make='nix-build -A package'
       nixpkgs-fmt default.nix
-      cd play_app
       mix format
     '';
   };
