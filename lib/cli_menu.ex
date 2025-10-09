@@ -1,9 +1,7 @@
-defmodule Mix.Tasks.Menu do
-  use Mix.Task
-  @shortdoc "Simple CLI menu for triggering specific app features"
+defmodule PlayApp.CliMenu do
+  @moduledoc "Simple CLI menu for triggering specific app features"
 
-  @impl Mix.Task
-  def run(_) do
+  def run do
     IO.puts("Staring up internal script...")
     menu_loop()
   end

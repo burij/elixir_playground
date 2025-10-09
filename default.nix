@@ -17,7 +17,7 @@ let
   shell = pkgs.mkShell {
     buildInputs = [ elixirEnv dependencies ];
     shellHook = ''
-      alias run='mix menu'
+      alias run='mix run_cli'
       alias repl='iex -S mix'
       alias make='nix-build -A package'
       nixpkgs-fmt default.nix
