@@ -22,6 +22,7 @@ let
       alias make='nix-build -A package'
       nixpkgs-fmt default.nix
       mix format
+      mix deps.get
     '';
   };
 

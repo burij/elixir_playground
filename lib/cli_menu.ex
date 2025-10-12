@@ -14,7 +14,6 @@ defmodule PlayApp.CliMenu do
         get_idea()
         menu_loop()
 
-
       "2" ->
         # TODO Task logic
         menu_loop()
