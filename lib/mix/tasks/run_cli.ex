@@ -5,7 +5,7 @@ defmodule Mix.Tasks.RunCli do
   @impl Mix.Task
   def run(_) do
     Mix.Task.run("app.start")
-    IO.puts("---------------------------------")
+    IO.puts("-----------------------------------------------------------------")
     PlayApp.CliMenu.run()
   end
 end

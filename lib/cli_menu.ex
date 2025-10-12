@@ -61,6 +61,6 @@ defmodule PlayApp.CliMenu do
 
   defp ideas_from_db do
     loaded_data = File.read!("ideas.dat")
-    current_ideas_list = :erlang.binary_to_term(loaded_data)
+    _current_ideas_list = :erlang.binary_to_term(loaded_data)
   end
 end
