@@ -11,11 +11,12 @@ defmodule PlayApp.CliMenu do
 
     case read_input() do
       "1" ->
-        save_idea()
+        post_idea()
         menu_loop()
 
       "2" ->
-        # TODO Task logic
+        idea = select_idea()
+        vote(idea)
         menu_loop()
 
       "q" ->
@@ -28,23 +29,24 @@ defmodule PlayApp.CliMenu do
   end
 
   defp display_menu do
+    Utils.draw_line(PlayApp.conf().separator, PlayApp.conf().terminal_width)
+
     IO.puts("""
-    ----------------------------------------------------------------------------
     Current project ideas:
     """)
 
     IO.inspect(ideas_from_db())
 
-    IO.puts("""
+    Utils.draw_line(PlayApp.conf().separator, PlayApp.conf().terminal_width)
 
-    ----------------------------------------------------------------------------
+    IO.puts("""
     Please select an option:
     1. Put a new idea out there
     2. Up/Downvote an idea
     q. Quit
-    ----------------------------------------------------------------------------
-
     """)
+
+    Utils.draw_line(PlayApp.conf().separator, PlayApp.conf().terminal_width)
 
     IO.write("Enter your choice: ")
   end
@@ -55,7 +57,7 @@ defmodule PlayApp.CliMenu do
     |> String.downcase()
   end
 
-  defp save_idea do
+  defp post_idea do
     IO.write("Enter your idea: ")
 
     _new_idea =
@@ -86,5 +88,36 @@ defmodule PlayApp.CliMenu do
     }
 
     [result]
+  end
+
+  defp select_idea do
+    IO.write("Enter idea id: ")
+    id = read_input()
+
+    ideas = ideas_from_db()
+
+    selected_idea =
+      Enum.find(ideas, fn idea ->
+        idea.id == id
+      end)
+
+    case selected_idea do
+      nil ->
+        IO.puts(IO.puts("The '#{id}' is not in the list!"))
+        select_idea()
+
+      %{content: content} ->
+        IO.write("Do you like the idea '#{content}'? (y/n):\n")
+    end
+
+    selected_idea
+  end
+
+  defp vote(_idea) do
+    case read_input() do
+      "y" -> IO.puts("upvote")
+      "n" -> IO.puts("downvote")
+      _ -> "That's not a valid option!"
+    end
   end
 end

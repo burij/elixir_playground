@@ -6,9 +6,7 @@ defmodule Mix.Tasks.RunCli do
   def run(_) do
     Mix.Task.run("app.start")
 
-    IO.puts("""
-    ----------------------------------------------------------------------------
-    """)
+    Utils.draw_line(PlayApp.conf().separator, PlayApp.conf().terminal_width)
 
     PlayApp.CliMenu.run()
   end
