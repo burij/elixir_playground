@@ -7,7 +7,7 @@ Install [Nix Package Manager](https://nixos.org/download/), then run:
 
 ```
 git clone https://github.com/burij/elixir_playground.git
-cd nixos-extended-rebuilder
+cd elixir_playground
 nix-shell -A shell
 ```
 
