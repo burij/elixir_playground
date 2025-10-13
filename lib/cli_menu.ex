@@ -28,15 +28,24 @@ defmodule PlayApp.CliMenu do
   end
 
   defp display_menu do
-    IO.puts("-----------------------------------------------------------------")
-    IO.puts("Current project ideas:")
+    IO.puts("""
+    ----------------------------------------------------------------------------
+    Current project ideas:
+    """)
+
     IO.inspect(ideas_from_db())
-    IO.puts("-----------------------------------------------------------------")
-    IO.puts("Please select an option:")
-    IO.puts("1. Put a new idea out there")
-    IO.puts("2. Up/Downvote an idea")
-    IO.puts("q. Quit")
-    IO.puts("-----------------------------------------------------------------")
+
+    IO.puts("""
+
+    ----------------------------------------------------------------------------
+    Please select an option:
+    1. Put a new idea out there
+    2. Up/Downvote an idea
+    q. Quit
+    ----------------------------------------------------------------------------
+
+    """)
+
     IO.write("Enter your choice: ")
   end
 
@@ -48,19 +57,34 @@ defmodule PlayApp.CliMenu do
 
   defp save_idea do
     IO.write("Enter your idea: ")
-    new_idea = IO.gets("") |> String.trim()
-    id = :crypto.strong_rand_bytes(2) |> Base.encode16(case: :lower)
-    votes = 1
-    idea = [%{id: id, content: new_idea, votes: votes}]
-    old_ideas = ideas_from_db()
-    ideas_list = idea ++ old_ideas
-    entry = :erlang.term_to_binary(ideas_list)
-    File.write!("ideas.dat", entry)
-    IO.puts("Your idea '#{new_idea}' has been saved...")
+
+    _new_idea =
+      IO.gets("")
+      |> String.trim()
+      |> idea_to_db()
   end
 
   defp ideas_from_db do
-    loaded_data = File.read!("ideas.dat")
-    _current_ideas_list = :erlang.binary_to_term(loaded_data)
+    _ideas =
+      File.read!("ideas.dat")
+      |> :erlang.binary_to_term()
+  end
+
+  defp idea_to_db(input) do
+    idea_entry = construct_entry(input)
+    ideas_list = idea_entry ++ ideas_from_db()
+    result = :erlang.term_to_binary(ideas_list)
+    File.write!("ideas.dat", result)
+    IO.puts("Your idea '#{input}' has been saved...")
+  end
+
+  defp construct_entry(input) do
+    result = %{
+      id: :crypto.strong_rand_bytes(2) |> Base.encode16(case: :lower),
+      content: input,
+      votes: 1
+    }
+
+    [result]
   end
 end
