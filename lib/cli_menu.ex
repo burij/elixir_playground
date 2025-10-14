@@ -41,7 +41,7 @@ defmodule PlayApp.CliMenu do
 
     IO.inspect(ideas_from_db())
 
-		line()
+    line()
 
     IO.puts("""
     Please select an option:
@@ -50,7 +50,7 @@ defmodule PlayApp.CliMenu do
     q. Quit
     """)
 
-		line()
+    line()
 
     IO.write("Enter your choice: ")
   end
