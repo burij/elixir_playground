@@ -6,6 +6,10 @@ defmodule PlayApp.CliMenu do
     menu_loop()
   end
 
+  defp line do
+    Utils.draw_line(PlayApp.conf().separator, PlayApp.conf().terminal_width)
+  end
+
   defp menu_loop() do
     display_menu()
 
@@ -29,7 +33,7 @@ defmodule PlayApp.CliMenu do
   end
 
   defp display_menu do
-    Utils.draw_line(PlayApp.conf().separator, PlayApp.conf().terminal_width)
+    line()
 
     IO.puts("""
     Current project ideas:
@@ -37,7 +41,7 @@ defmodule PlayApp.CliMenu do
 
     IO.inspect(ideas_from_db())
 
-    Utils.draw_line(PlayApp.conf().separator, PlayApp.conf().terminal_width)
+		line()
 
     IO.puts("""
     Please select an option:
@@ -46,7 +50,7 @@ defmodule PlayApp.CliMenu do
     q. Quit
     """)
 
-    Utils.draw_line(PlayApp.conf().separator, PlayApp.conf().terminal_width)
+		line()
 
     IO.write("Enter your choice: ")
   end
