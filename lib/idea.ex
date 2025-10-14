@@ -5,15 +5,35 @@ defmodule Idea do
     _new_idea =
       IO.gets("")
       |> String.trim()
-      |> IdeasDB.write()
+      |> IdeasDB.add()
   end
 
-  def vote(_idea) do
+  def vote(idea) do
     case Utils.read_input() do
-      "y" -> IO.puts("upvote")
-      "n" -> IO.puts("downvote")
+      "y" -> new_vote(idea, 1)
+      "n" -> new_vote(idea, -1)
       _ -> "That's not a valid option!"
     end
+  end
+
+  defp new_vote(idea, value) do
+    IO.puts(idea.id)
+    db = IdeasDB.read()
+
+    new_score =
+      Enum.map(db, fn db ->
+        case db.id == idea.id do
+          true -> %{db | votes: db.votes + value}
+          false -> db
+        end
+      end)
+
+    result =
+      Enum.reject(new_score, fn new_score ->
+        new_score.votes < 1
+      end)
+
+    IdeasDB.rewrite(result)
   end
 
   def select do

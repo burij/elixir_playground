@@ -1,11 +1,15 @@
 defmodule IdeasDB do
   def read do
-    _ideas =
-      File.read!("ideas.dat")
-      |> :erlang.binary_to_term()
+    case File.read("ideas.dat") do
+      {:ok, data} ->
+        :erlang.binary_to_term(data)
+
+      {:error, _reason} ->
+        []
+    end
   end
 
-  def write(input) do
+  def add(input) do
     idea_entry = construct_entry(input)
     ideas_list = idea_entry ++ read()
     result = :erlang.term_to_binary(ideas_list)
@@ -21,5 +25,11 @@ defmodule IdeasDB do
     }
 
     [result]
+  end
+
+  def rewrite(input) do
+    db = :erlang.term_to_binary(input)
+    File.write!("ideas.dat", db)
+    IO.puts("Changes saved...")
   end
 end
