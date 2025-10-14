@@ -1,6 +1,9 @@
 { pkgs ? import <nixpkgs> { } }:
 
 let
+  nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-25.05";
+  pkgs = import nixpkgs { config = { }; overlays = [ ]; };
+
   appName = "elixir_playground";
   appVersion = "0.1";
 
@@ -11,6 +14,7 @@ let
 
   dependencies = with pkgs; [
     wget
+    git
     nixpkgs-fmt
   ];
 
