@@ -1,4 +1,4 @@
-defmodule PlayApp.CliMenu do
+defmodule CliMenu do
   @moduledoc "Simple CLI menu for triggering specific app features"
 
   def run do
@@ -39,7 +39,7 @@ defmodule PlayApp.CliMenu do
     Current project ideas:
     """)
 
-    IO.inspect(ideas_from_db())
+    IO.inspect(IdeasDB.read())
 
     line()
 
@@ -67,38 +67,14 @@ defmodule PlayApp.CliMenu do
     _new_idea =
       IO.gets("")
       |> String.trim()
-      |> idea_to_db()
-  end
-
-  defp ideas_from_db do
-    _ideas =
-      File.read!("ideas.dat")
-      |> :erlang.binary_to_term()
-  end
-
-  defp idea_to_db(input) do
-    idea_entry = construct_entry(input)
-    ideas_list = idea_entry ++ ideas_from_db()
-    result = :erlang.term_to_binary(ideas_list)
-    File.write!("ideas.dat", result)
-    IO.puts("Your idea '#{input}' has been saved...")
-  end
-
-  defp construct_entry(input) do
-    result = %{
-      id: :crypto.strong_rand_bytes(2) |> Base.encode16(case: :lower),
-      content: input,
-      votes: 1
-    }
-
-    [result]
+      |> IdeasDB.write()
   end
 
   defp select_idea do
     IO.write("Enter idea id: ")
     id = read_input()
 
-    ideas = ideas_from_db()
+    ideas = IdeasDB.read()
 
     selected_idea =
       Enum.find(ideas, fn idea ->

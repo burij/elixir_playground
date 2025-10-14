@@ -8,6 +8,6 @@ defmodule Mix.Tasks.RunCli do
 
     Utils.draw_line(PlayApp.conf().separator, PlayApp.conf().terminal_width)
 
-    PlayApp.CliMenu.run()
+    CliMenu.run()
   end
 end
