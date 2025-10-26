@@ -31,8 +31,8 @@ defmodule CliMenu do
 
   defp line do
     PlayApp.Utils.draw_line(
-      PlayApp.conf().separator,
-      PlayApp.conf().terminal_width
+      PlayApp.get_separator(),
+      PlayApp.get_terminal_width()
     )
   end
 
