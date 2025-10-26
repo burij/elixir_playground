@@ -1,0 +1,2 @@
+defmodule IfcTool do
+end
