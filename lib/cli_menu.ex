@@ -21,6 +21,7 @@ defmodule CliMenu do
     Please select an option:
     1. Put a new idea out there
     2. Up/Downvote an idea
+    3. Run IfcTool
     q. Quit
     """)
 
@@ -48,6 +49,9 @@ defmodule CliMenu do
         idea = CliMenu.Idea.select()
         CliMenu.Idea.vote(idea)
         menu_loop()
+
+      "3" ->
+        IfcTool.run()
 
       "q" ->
         IO.puts("Exiting...")
