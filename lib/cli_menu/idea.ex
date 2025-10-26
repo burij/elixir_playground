@@ -1,15 +1,15 @@
-defmodule Idea do
+defmodule CliMenu.Idea do
   def post do
     IO.write("Enter your idea: ")
 
     _new_idea =
       IO.gets("")
       |> String.trim()
-      |> IdeasDB.add()
+      |> CliMenu.IdeasDB.add()
   end
 
   def vote(idea) do
-    case Utils.read_input() do
+    case PlayApp.Utils.read_input() do
       "y" -> new_vote(idea, 1)
       "n" -> new_vote(idea, -1)
       _ -> "That's not a valid option!"
@@ -18,7 +18,7 @@ defmodule Idea do
 
   defp new_vote(idea, value) do
     IO.puts(idea.id)
-    db = IdeasDB.read()
+    db = CliMenu.IdeasDB.read()
 
     new_score =
       Enum.map(db, fn db ->
@@ -33,14 +33,14 @@ defmodule Idea do
         new_score.votes < 1
       end)
 
-    IdeasDB.rewrite(result)
+    CliMenu.IdeasDB.rewrite(result)
   end
 
   def select do
     IO.write("Enter idea id: ")
-    id = Utils.read_input()
+    id = PlayApp.Utils.read_input()
 
-    ideas = IdeasDB.read()
+    ideas = CliMenu.IdeasDB.read()
 
     selected_idea =
       Enum.find(ideas, fn idea ->

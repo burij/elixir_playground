@@ -13,7 +13,7 @@ defmodule CliMenu do
     Current project ideas:
     """)
 
-    IO.inspect(IdeasDB.read())
+    IO.inspect(CliMenu.IdeasDB.read())
 
     line()
 
@@ -30,20 +30,23 @@ defmodule CliMenu do
   end
 
   defp line do
-    Utils.draw_line(PlayApp.conf().separator, PlayApp.conf().terminal_width)
+    PlayApp.Utils.draw_line(
+      PlayApp.conf().separator,
+      PlayApp.conf().terminal_width
+    )
   end
 
   defp menu_loop() do
     display_menu()
 
-    case Utils.read_input() do
+    case PlayApp.Utils.read_input() do
       "1" ->
-        Idea.post()
+        CliMenu.Idea.post()
         menu_loop()
 
       "2" ->
-        idea = Idea.select()
-        Idea.vote(idea)
+        idea = CliMenu.Idea.select()
+        CliMenu.Idea.vote(idea)
         menu_loop()
 
       "q" ->

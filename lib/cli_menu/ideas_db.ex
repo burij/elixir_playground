@@ -1,4 +1,4 @@
-defmodule IdeasDB do
+defmodule CliMenu.IdeasDB do
   def read do
     case File.read("ideas.dat") do
       {:ok, data} ->

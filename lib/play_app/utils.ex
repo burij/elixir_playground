@@ -1,4 +1,4 @@
-defmodule Utils do
+defmodule PlayApp.Utils do
   @doc """
   Prints a line of characters.
   """
