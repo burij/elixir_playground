@@ -4,6 +4,25 @@ defmodule IfcTool.Entity do
     |> Enum.find(fn entity -> entity.id == id end)
   end
 
+  def select(model, id) do
+    IfcTool.Model.fetch(model)
+    |> Enum.find(fn entity -> entity.id == id end)
+  end
+
+  def edit(id) do
+    data = select(id)
+    IO.puts("Current content of the entity ##{id}: ")
+    IO.puts(data.content)
+    IO.write("Enter the new content:")
+
+    userdata =
+      IO.gets("")
+      |> String.trim()
+
+    %{data | content: userdata}
+    |> IO.inspect()
+  end
+
   def extract(line) do
     regex = ~r/^#(\d+)=(\w+)\((.*)\);/
 
