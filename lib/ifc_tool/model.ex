@@ -1,19 +1,9 @@
 defmodule IfcTool.Model do
-  def fetch() do
-    model = IfcTool.get_path()
+  def fetch(model \\ IfcTool.get_path) do
     parse_to_entities(model)
   end
 
-  def fetch(model) do
-    parse_to_entities(model)
-  end
-
-  def by_type(ifc_type) do
-    fetch()
-    |> Enum.filter(fn entity -> entity.type == ifc_type end)
-  end
-
-  def by_type(model, ifc_type) do
+  def by_type(ifc_type, model \\  IfcTool.get_path) do
     fetch(model)
     |> Enum.filter(fn entity -> entity.type == ifc_type end)
   end
