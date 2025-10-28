@@ -3,6 +3,16 @@ defmodule IfcTool do
     parse_to_raw_entities("input.ifc")
   end
 
+  def search_by_type(ifc_type) do
+    run()
+    |> Enum.filter(fn entity -> entity.type == ifc_type end)
+  end
+
+  def select(id) do
+    run()
+    |> Enum.find(fn entity -> entity.id == id end)
+  end
+
   defp parse_to_raw_entities(file_path) do
     File.stream!(file_path, [], :line)
     |> Stream.filter(&String.starts_with?(&1, "#"))
