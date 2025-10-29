@@ -1,11 +1,11 @@
 defmodule IfcTool.Entity do
-  def select(id, model \\ IfcTool.get_path()) do
-    IfcTool.Model.fetch(model)
+  def select(id, ifc \\ IfcTool.get_path()) do
+    IfcTool.Model.fetch(ifc)
     |> Enum.find(fn entity -> entity.id == id end)
   end
 
-  def edit(id, model \\ IfcTool.get_path()) do
-    selected_entity = select(id, model)
+  def edit(id, ifc \\ IfcTool.get_path()) do
+    selected_entity = select(id, ifc)
     IO.puts("Current content of the entity ##{id}: ")
     IO.puts(selected_entity.content)
     IO.write("Enter the new content:")
@@ -14,11 +14,11 @@ defmodule IfcTool.Entity do
       IO.gets("")
       |> String.trim()
 
-    original_data = IfcTool.Model.fetch(model)
+    journal = IfcTool.Model.fetch(model)
 
     %{selected_entity | content: userdata}
     |> update_raw()
-    |> IfcTool.Model.update(original_data)
+    |> IfcTool.Model.update(journal)
     |> IO.inspect()
   end
 

@@ -1,15 +1,15 @@
 defmodule IfcTool.Model do
-  def fetch(model \\ IfcTool.get_path()) do
-    parse_to_entities(model)
+  def fetch(ifc \\ IfcTool.get_path()) do
+    parse_to_entities(ifc)
   end
 
-  def by_type(ifc_type, model \\ IfcTool.get_path()) do
-    fetch(model)
-    |> Enum.filter(fn entity -> entity.type == ifc_type end)
+  def by_type(type, ifc \\ IfcTool.get_path()) do
+    fetch(ifc)
+    |> Enum.filter(fn entity -> entity.type == type end)
   end
 
-  def update(updated_entity, parsed_model) do
-    Enum.map(parsed_model, fn entity ->
+  def update(updated_entity, journal) do
+    Enum.map(journal, fn entity ->
       if entity.id == updated_entity.id do
         updated_entity
       else
@@ -18,6 +18,11 @@ defmodule IfcTool.Model do
     end)
   end
 
+  def compile_body(journal) do
+    Enum.map(journal, fn entity ->
+      "#{entity.raw}\n"
+    end)
+  end
 
   defp parse_to_entities(file_path) do
     File.stream!(file_path, [], :line)
