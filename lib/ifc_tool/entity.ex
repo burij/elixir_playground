@@ -17,6 +17,7 @@ defmodule IfcTool.Entity do
     original_data = IfcTool.Model.fetch(model)
 
     %{selected_entity | content: userdata}
+    |> update_raw()
     |> IfcTool.Model.update(original_data)
     |> IO.inspect()
   end
@@ -31,7 +32,7 @@ defmodule IfcTool.Entity do
             id: String.to_integer(id_str),
             type: type_str,
             content: content,
-            original_line: String.trim_trailing(line)
+            raw: String.trim_trailing(line)
           }
         ]
 
@@ -41,7 +42,8 @@ defmodule IfcTool.Entity do
     end
   end
 
-  def pack(entity) do
-    "##{entity.id}=#{entity.type}(#{entity.content});\n"
+  defp update_raw(entity) do
+    updated_raw = "##{entity.id}=#{entity.type}(#{entity.content});"
+    %{entity | raw: updated_raw}
   end
 end
