@@ -16,7 +16,7 @@ defmodule IfcTool.Entity do
 
     original_data = IfcTool.Model.fetch(model)
 
-    %{data | content: userdata}
+    %{selected_entity | content: userdata}
     |> IfcTool.Model.update(original_data)
     |> IO.inspect()
   end
@@ -39,5 +39,9 @@ defmodule IfcTool.Entity do
         # Ignore header lines, comments, or malformed lines
         []
     end
+  end
+
+  def pack(entity) do
+    "##{entity.id}=#{entity.type}(#{entity.content});\n"
   end
 end

@@ -18,6 +18,11 @@ defmodule IfcTool.Model do
     end)
   end
 
+  def serialize(modified_model) do
+    Enum.map(modified_model, &IfcTool.Entity.pack/1)
+  end
+
+
   defp parse_to_entities(file_path) do
     File.stream!(file_path, [], :line)
     |> Stream.filter(&String.starts_with?(&1, "#"))
