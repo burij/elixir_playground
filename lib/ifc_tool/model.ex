@@ -33,6 +33,10 @@ defmodule IfcTool.Model do
     end)
   end
 
+  def write(header, body, ifc \\ "output.ifc") do
+  		File.write(ifc, header ++ body)
+  	end
+
   defp parse_to_entities(ifc) do
     File.stream!(ifc, [], :line)
     |> Stream.filter(&String.starts_with?(&1, "#"))
