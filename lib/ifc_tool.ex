@@ -4,6 +4,6 @@ defmodule IfcTool do
   end
 
   def run do
-    IfcTool.Model.fetch()
+    IfcTool.Cli.run()
   end
 end

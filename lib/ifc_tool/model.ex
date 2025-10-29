@@ -1,19 +1,21 @@
 defmodule IfcTool.Model do
   def fetch(ifc \\ IfcTool.get_path()) do
-  		IO.inspect(get_header(ifc))
     parse_to_entities(ifc)
   end
 
-	def get_header(ifc \\ IfcTool.get_path()) do
-		header = ifc
-		|> File.stream!([], :line)
-		|> Stream.take_while(fn line -> String.trim(line) != "DATA;" end)
-		|> Enum.to_list()
-		header ++ ["DATA;\n"]
-	end
+  def get_header(ifc \\ IfcTool.get_path()) do
+    header =
+      ifc
+      |> File.stream!([], :line)
+      |> Stream.take_while(fn line -> String.trim(line) != "DATA;" end)
+      |> Enum.to_list()
+
+    header ++ ["DATA;\n"]
+  end
 
   def by_type(type, ifc \\ IfcTool.get_path()) do
-  		search_term = String.upcase(type)
+    search_term = String.upcase(type)
+
     fetch(ifc)
     |> Enum.filter(fn entity -> entity.type == search_term end)
   end
@@ -35,8 +37,8 @@ defmodule IfcTool.Model do
   end
 
   def write(header, body, ifc \\ "output.ifc") do
-  		File.write(ifc, header ++ body)
-  	end
+    File.write(ifc, header ++ body)
+  end
 
   defp parse_to_entities(ifc) do
     File.stream!(ifc, [], :line)
