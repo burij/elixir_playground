@@ -14,7 +14,7 @@ defmodule IfcTool.Entity do
       IO.gets("")
       |> String.trim()
 
-    journal = IfcTool.Model.fetch(model)
+    journal = IfcTool.Model.fetch(ifc)
 
     %{selected_entity | content: userdata}
     |> update_raw()
