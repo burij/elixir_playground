@@ -13,8 +13,9 @@ defmodule IfcTool.Model do
 	end
 
   def by_type(type, ifc \\ IfcTool.get_path()) do
+  		search_term = String.upcase(type)
     fetch(ifc)
-    |> Enum.filter(fn entity -> entity.type == type end)
+    |> Enum.filter(fn entity -> entity.type == search_term end)
   end
 
   def update(updated_entity, journal) do
