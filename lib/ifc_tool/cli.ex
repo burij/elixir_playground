@@ -5,32 +5,53 @@ defmodule IfcTool.Cli do
 
     IO.gets("")
     |> String.trim()
-    |> loop()
+    |> ifc_loop()
   end
 
-  defp loop(ifc) do
+  defp ifc_loop(ifc) do
     IfcTool.Model.get_header(ifc)
     IO.write("🏠 " <> ifc <> ":")
 
     IO.gets("")
     |> String.trim()
-    |> router(ifc)
-  end
-
-  defp router(cmd, ifc) do
-    case cmd do
+    |> case do
       "q" ->
         IO.puts("👋 exiting...")
 
-      "journal" ->
-        IfcTool.Model.fetch(ifc)
-        |> IO.inspect()
+      "e" ->
+        IO.puts("⏏️  ejecting file...")
+        run()
 
-        loop(ifc)
+      "j" ->
+        journal = IfcTool.Model.fetch(ifc)
+        journal_loop(journal, ifc)
 
       _ ->
-        IO.puts("🤦‍♂️ invalid command")
-        loop(ifc)
+        IO.puts("🧱 invalid command")
+        ifc_loop(ifc)
+    end
+  end
+
+  defp journal_loop(journal, ifc) do
+    IO.write("🤿 " <> ifc <> ">journal:")
+
+    IO.gets("")
+    |> String.trim()
+    |> case do
+      "q" ->
+        IO.puts("👋 exiting...")
+
+      "e" ->
+        IO.puts("⏏️  ejecting journal...")
+        ifc_loop(ifc)
+
+      "l" ->
+        IO.inspect(journal)
+        journal_loop(journal, ifc)
+
+      _ ->
+        IO.puts("🧱 invalid command")
+        journal_loop(journal, ifc)
     end
   end
 end
