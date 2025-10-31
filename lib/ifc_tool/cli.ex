@@ -60,8 +60,8 @@ defmodule IfcTool.Cli do
         IO.inspect(journal)
         journal_loop(journal, ifc)
 
-      "edit" ->
-        IO.write("📔 " <> ifc <> ">journal>edit>#?:")
+      "u" ->
+        IO.write("📔 " <> ifc <> ">journal>update>#?:")
 
         IO.gets("")
         |> String.trim()

@@ -24,6 +24,7 @@ defmodule IfcTool.Model do
     Enum.map(journal, fn entity ->
       if entity.id == updated_entity.id do
         updated_entity
+        |> IO.inspect()
       else
         entity
       end

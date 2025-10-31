@@ -19,7 +19,6 @@ defmodule IfcTool.Entity do
     %{selected_entity | content: userdata}
     |> update_raw()
     |> IfcTool.Model.update(journal)
-    |> IO.inspect()
   end
 
   def extract(line) do
