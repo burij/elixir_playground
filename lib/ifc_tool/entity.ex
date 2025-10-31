@@ -1,6 +1,11 @@
 defmodule IfcTool.Entity do
   def select(id, ifc \\ IfcTool.get_path()) do
-    IfcTool.Model.fetch(ifc)
+    x = ifc
+
+    case x do
+      _ when is_list(x) -> x
+      _ -> IfcTool.Model.fetch(x)
+    end
     |> Enum.find(fn entity -> entity.id == id end)
   end
 

@@ -71,7 +71,7 @@ defmodule IfcTool.Cli do
         |> journal_loop(ifc)
 
       _ when select ->
-        IfcTool.Entity.select(id)
+        IfcTool.Entity.select(id, journal)
         |> IO.inspect()
 
         journal_loop(journal, ifc)
