@@ -33,11 +33,22 @@ defmodule IfcTool.Cli do
   end
 
   defp journal_loop(journal, ifc) do
-    IO.write("🤿 " <> ifc <> ">journal:")
+    IO.write("📔 " <> ifc <> ">journal:")
 
-    IO.gets("")
-    |> String.trim()
-    |> case do
+    userinput =
+      IO.gets("")
+      |> String.trim()
+
+    id =
+      try do
+        String.to_integer(userinput)
+      rescue
+        _ -> false
+      end
+
+    select = is_number(id)
+
+    case userinput do
       "q" ->
         IO.puts("👋 exiting...")
 
@@ -47,6 +58,12 @@ defmodule IfcTool.Cli do
 
       "l" ->
         IO.inspect(journal)
+        journal_loop(journal, ifc)
+
+      _ when select ->
+        IfcTool.Entity.select(id)
+        |> IO.inspect()
+
         journal_loop(journal, ifc)
 
       _ ->
