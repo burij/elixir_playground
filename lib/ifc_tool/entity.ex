@@ -19,7 +19,13 @@ defmodule IfcTool.Entity do
       IO.gets("")
       |> String.trim()
 
-    journal = IfcTool.Model.fetch(ifc)
+    x = ifc
+
+    journal =
+      case x do
+        _ when is_list(x) -> x
+        _ -> IfcTool.Model.fetch(x)
+      end
 
     %{selected_entity | content: userdata}
     |> update_raw()
