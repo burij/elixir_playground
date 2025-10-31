@@ -60,6 +60,16 @@ defmodule IfcTool.Cli do
         IO.inspect(journal)
         journal_loop(journal, ifc)
 
+      "edit" ->
+        IO.write("📔 " <> ifc <> ">journal>edit>#?:")
+
+        IO.gets("")
+        |> String.trim()
+        |> String.to_integer()
+        # TODO change api so journal can be passed
+        |> IfcTool.Entity.edit(ifc)
+        |> journal_loop(ifc)
+
       _ when select ->
         IfcTool.Entity.select(id)
         |> IO.inspect()
