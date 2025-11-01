@@ -9,7 +9,7 @@ defmodule IfcTool.Cli do
   end
 
   defp ifc_loop(ifc) do
-    IfcTool.Model.get_header(ifc)
+    header = IfcTool.Model.get_header(ifc)
     IO.write("🏠 " <> ifc <> ":")
 
     IO.gets("")
@@ -25,6 +25,10 @@ defmodule IfcTool.Cli do
       "j" ->
         journal = IfcTool.Model.fetch(ifc)
         journal_loop(journal, ifc)
+
+      "i" ->
+        IO.inspect(header)
+        ifc_loop(ifc)
 
       _ ->
         IO.puts("🧱 invalid command")
@@ -65,6 +69,20 @@ defmodule IfcTool.Cli do
         |> IO.inspect()
 
         journal_loop(journal, ifc)
+
+      "w" ->
+        IO.write("📔 " <> ifc <> ">write journal>filename?:")
+
+        header = IfcTool.Model.get_header(ifc)
+
+        ifc =
+          IO.gets("")
+          |> String.trim()
+
+        body = IfcTool.Model.compile_body(journal)
+        IfcTool.Model.write(header, body, ifc)
+
+        ifc_loop(ifc)
 
       "l" ->
         IO.inspect(journal)
