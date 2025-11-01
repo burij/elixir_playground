@@ -56,6 +56,16 @@ defmodule IfcTool.Cli do
         IO.puts("⏏️  ejecting journal...")
         ifc_loop(ifc)
 
+      "t" ->
+        IO.write("📔 " <> ifc <> ">journal>type?:")
+
+        IO.gets("")
+        |> String.trim()
+        |> IfcTool.Model.by_type(journal)
+        |> IO.inspect()
+
+        journal_loop(journal, ifc)
+
       "l" ->
         IO.inspect(journal)
         journal_loop(journal, ifc)

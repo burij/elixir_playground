@@ -16,7 +16,12 @@ defmodule IfcTool.Model do
   def by_type(type, ifc \\ IfcTool.get_path()) do
     search_term = String.upcase(type)
 
-    fetch(ifc)
+    x = ifc
+
+    case x do
+      _ when is_list(x) -> x
+      _ -> IfcTool.Model.fetch(x)
+    end
     |> Enum.filter(fn entity -> entity.type == search_term end)
   end
 
