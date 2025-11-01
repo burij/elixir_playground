@@ -66,8 +66,7 @@ defmodule IfcTool.Cli do
         IO.gets("")
         |> String.trim()
         |> String.to_integer()
-        # TODO change api so journal can be passed
-        |> IfcTool.Entity.edit(ifc)
+        |> IfcTool.Entity.edit(journal)
         |> journal_loop(ifc)
 
       _ when select ->
