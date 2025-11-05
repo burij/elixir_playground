@@ -16,7 +16,7 @@ let
     wget
     git
     nixpkgs-fmt
-    jujutsu #test
+    jujutsu
   ];
 
   shell = pkgs.mkShell {

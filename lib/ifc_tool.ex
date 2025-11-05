@@ -1,6 +1,6 @@
 defmodule IfcTool do
   def get_path do
-    "input.ifc"
+  		Application.get_env(:play_app, :path, "input.ifc")
   end
 
   def run do
