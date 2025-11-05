@@ -12,6 +12,8 @@ let
     erlang
   ];
 
+  beamPackages = pkgs.beam.packagesWith pkgs.beam.interpreters.erlang;
+
   dependencies = with pkgs; [
     wget
     git
@@ -30,25 +32,13 @@ let
     '';
   };
 
-  package = pkgs.stdenv.mkDerivation {
+  package = beamPackages.mixRelease {
     pname = appName;
     version = appVersion;
-
-    src = ./play_app/.;
-
-    nativeBuildInputs = [ pkgs.makeWrapper ];
-    buildInputs = [ elixirEnv ];
-
-    #TODO create matching installPhase
-    installPhase = ''
-      mkdir -p $out/bin
-    '';
-
-    meta = with pkgs.lib; {
-      description = "My Elixir application";
-      license = licenses.mit;
-      platforms = platforms.all;
-    };
+    src = ./.;
+    removeCookie = false;
   };
+
+
 in
 { shell = shell; package = package; }
