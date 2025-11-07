@@ -24,10 +24,11 @@ let
   shell = pkgs.mkShell {
     buildInputs = [ elixirEnv dependencies ];
     shellHook = ''
-      alias run='mix format; mix run --no-halt'
+      alias run='mix run --no-halt'
       alias repl='iex -S mix'
       alias make='nix-build -A package'
       nixpkgs-fmt default.nix
+      mix format
       mix deps.get
     '';
   };
