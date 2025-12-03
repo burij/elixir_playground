@@ -1,8 +1,9 @@
-{ pkgs ? import <nixpkgs> { } }:
+{ pkgs ? import
+    (fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-25.05")
+    { config = { }; overlays = [ ]; }
+}:
 
 let
-  nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-25.05";
-  pkgs = import nixpkgs { config = { }; overlays = [ ]; };
 
   appName = "elixir_playground";
   appVersion = "0.1";
@@ -22,14 +23,12 @@ let
   ];
 
   shell = pkgs.mkShell {
-    buildInputs = [ elixirEnv dependencies ];
+    buildInputs = elixirEnv ++ dependencies;
     shellHook = ''
       alias run='mix run --no-halt'
       alias repl='iex -S mix'
       alias make='nix-build -A package'
-      nixpkgs-fmt default.nix
-      mix format
-      mix deps.get
+      alias form='nixpkgs-fmt default.nix; mix format'
     '';
   };
 
