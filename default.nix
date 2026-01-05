@@ -1,5 +1,5 @@
 { pkgs ? import
-    (fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-25.05")
+    (fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-25.11")
     { config = { }; overlays = [ ]; }
 }:
 
@@ -20,6 +20,7 @@ let
     git
     nixpkgs-fmt
     jujutsu
+    opencode
   ];
 
   shell = pkgs.mkShell {
@@ -27,7 +28,7 @@ let
     shellHook = ''
       alias run='mix run --no-halt'
       alias repl='iex -S mix'
-      alias make='nix-build -A package'
+      alias make='nix-build -A package && git add . && git commit -m '
       alias form='nixpkgs-fmt default.nix; mix format'
     '';
   };
