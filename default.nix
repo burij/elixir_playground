@@ -28,6 +28,7 @@ let
     shellHook = ''
       alias run='mix run --no-halt'
       alias repl='iex -S mix'
+      alias script='elixir script.exs'
       alias make='nix-build -A package && git add . && git commit -m '
       alias form='nixpkgs-fmt default.nix; mix format'
     '';
