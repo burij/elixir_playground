@@ -1,7 +1,10 @@
 defmodule Script do
   def get_commands do
     [
-      {"git", ["status"]}
+      {"docker", ["compose", "pull"], cd: "/srv/config"},
+      {"docker", ["compose", "up", "-d"], cd: "/srv/config"},
+      {"sleep", ["20"]},
+      {"docker", ["image", "prune", "-f"], cd: "/srv/config"}
     ]
   end
 
@@ -17,7 +20,7 @@ defmodule Script do
     end)
   end
 
-  def message([ok: output]) do
+  def message(ok: output) do
     IO.puts("OK!")
     IO.puts(output)
   end
@@ -30,22 +33,9 @@ defmodule Script do
   end
 
   def run do
+    IO.puts("Server upgrade script is launching!")
     get_commands() |> execute() |> message()
   end
 end
 
-Script.run
-
-
-# IO.puts("Server upgrade script is launching!")
-
-# {output, _} = System.cmd("docker", ["compose", "pull"], cd: "/srv/config")
-# IO.puts(output)
-
-# {output, _} = System.cmd("docker", ["compose", "up", "-d"], cd: "/srv/config")
-# IO.puts(output)
-
-# {_, _} = System.cmd("sleep", ["20"])
-
-# {output, _} = System.cmd("docker", ["image", "prune", "-f"], cd: "/srv/config")
-# IO.puts(output)
+Script.run()
