@@ -1,5 +1,5 @@
 defmodule Script do
-  def get_commands do
+  defp get_commands do
     [
       {"docker", ["compose", "pull"], cd: "/srv/config"},
       {"docker", ["compose", "up", "-d"], cd: "/srv/config"},
@@ -8,7 +8,7 @@ defmodule Script do
     ]
   end
 
-  def execute(command_list) do
+  defp execute(command_list) do
     command_list
     |> Enum.map(fn {cmd, args} ->
       IO.puts("Running: #{cmd} #{Enum.join(args, " ")}")
@@ -20,12 +20,12 @@ defmodule Script do
     end)
   end
 
-  def message(ok: output) do
+  defp message(ok: output) do
     IO.puts("OK!")
     IO.puts(output)
   end
 
-  def message([{:error, exit_code, output}]) do
+  defp message([{:error, exit_code, output}]) do
     IO.puts("Something went wrong!")
     IO.puts("Exit code:")
     IO.puts(exit_code)
