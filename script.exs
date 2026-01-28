@@ -18,7 +18,7 @@ defmodule Script do
   end
 end
 
-Script.get_commands() |> Script.execute()
+Script.get_commands() |> Script.execute() |> IO.puts()
 
 
 # IO.puts("Server upgrade script is launching!")
