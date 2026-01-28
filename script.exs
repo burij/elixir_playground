@@ -1,7 +1,7 @@
 defmodule Script do
   def get_commands do
     [
-    {"git", ["status"]}
+      {"git", ["status"]}
     ]
   end
 
@@ -16,9 +16,25 @@ defmodule Script do
       end
     end)
   end
+
+  def message([ok: output]) do
+    IO.puts("OK!")
+    IO.puts(output)
+  end
+
+  def message([{:error, exit_code, output}]) do
+    IO.puts("Something went wrong!")
+    IO.puts("Exit code:")
+    IO.puts(exit_code)
+    IO.puts(output)
+  end
+
+  def run do
+    get_commands() |> execute() |> message()
+  end
 end
 
-Script.get_commands() |> Script.execute() |> IO.puts()
+Script.run
 
 
 # IO.puts("Server upgrade script is launching!")
