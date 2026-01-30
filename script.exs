@@ -2,15 +2,16 @@ defmodule Script do
   def run do
     IO.puts("Server upgrade script is launching!")
     get_commands() |> execute()
+    # IO.puts("do not forget to start nextcloud")
+    # IO.puts("https://box:8080")
   end
 
   defp get_commands do
     [
-      "cd /srv/config",
-      "docker compose pull",
-      "docker compose up -d",
-      "sleep 20",
-      "docker image prune -f"
+      "cd /srv/config; docker compose pull",
+      "cd /srv/config; docker compose up -d --force-recreate",
+      # "sleep 20",
+      "docker image prune -af",
     ]
   end
 
