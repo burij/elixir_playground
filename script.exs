@@ -6,17 +6,20 @@ defmodule Script do
     IO.puts("https://box:8080")
   end
 
-  # defp get_stamp do
-  #   Date.utc_today()
-  #   |>Date.to_string()
-  # end
+  defp get_date do
+    Date.utc_today()
+    |>Date.to_string()
+  end
 
   defp get_commands do
     pr_dir = "/srv/config"
     opts = "--force-recreate --remove-orphans"
     sterm = "{{.Repository}}:{{.Tag}}"
+    stamp = get_date() <> "_burij_Sicherung_"
 
     [
+      "sudo tar -zcvf /srv/backups/#{stamp}config.tar.gz #{pr_dir}",
+      "sudo zip -r /srv/backups/#{stamp}volumes /srv/docker/volumes",
       "sudo docker stop $(sudo docker ps -a -q); ",
       "cd #{pr_dir};sudo docker compose pull",
       "docker images --format '#{sterm}' | xargs -L1 docker pull;",
