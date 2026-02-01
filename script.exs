@@ -7,9 +7,11 @@ defmodule Script do
   end
 
   defp get_commands do
+    pr_dir = "/srv/config"
+
     [
-      "cd /srv/config; docker compose pull",
-      "cd /srv/config; docker compose up -d --force-recreate",
+      "cd #{pr_dir}; docker compose pull",
+      "cd #{pr_dir}; docker compose up -d --force-recreate --remove-orphans",
       # "sleep 20",
       "docker image prune -af",
     ]
