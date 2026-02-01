@@ -6,8 +6,14 @@ defmodule Script do
     # IO.puts("https://box:8080")
   end
 
+  defp get_stamp do
+    Date.utc_today()
+    |>Date.to_string()
+  end
+
   defp get_commands do
     pr_dir = "/srv/config"
+    stamp = get_stamp()
 
     [
       "cd #{pr_dir}; docker compose pull",
