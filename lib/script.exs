@@ -8,7 +8,7 @@ defmodule Script do
 
   defp get_date do
     Date.utc_today()
-    |>Date.to_string()
+    |> Date.to_string()
   end
 
   defp get_commands do
@@ -25,7 +25,7 @@ defmodule Script do
       "docker images --format '#{sterm}' | xargs -L1 docker pull;",
       "cd #{pr_dir};sudo docker compose up -d #{opts}",
       "sleep 20",
-      "sudo docker image prune -af",
+      "sudo docker image prune -af"
     ]
   end
 
