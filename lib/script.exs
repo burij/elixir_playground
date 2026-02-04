@@ -1,44 +1,63 @@
 defmodule Script do
-  def run do
-    IO.puts("Server upgrade script is launching!")
-    get_commands() |> execute()
-    IO.puts("do not forget to start nextcloud!")
-    IO.puts("https://box:8080")
+  def start(port) do
+    {:ok, listen_socket} =
+      :gen_tcp.listen(
+        port,
+        [:binary, packet: :raw, active: false, reuseaddr: true]
+      )
+
+    IO.puts("server is running on #{port}...\n")
+    accept_connection(listen_socket)
   end
 
-  defp get_date do
-    Date.utc_today()
-    |> Date.to_string()
+  def accept_connection(listen_socket) do
+    IO.puts("Waiting for connection...\n")
+    {:ok, client_socket} = :gen_tcp.accept(listen_socket)
+
+    IO.puts("Connection accepted!\n")
+
+    pid = spawn(fn -> process_request(client_socket) end)
+    IO.puts( "Processing at PID: #{inspect(pid)}\n" )
+    :ok = :gen_tcp.controlling_process(client_socket, pid)
+
+    accept_connection(listen_socket)
   end
 
-  defp get_commands do
-    pr_dir = "/srv/config"
-    opts = "--force-recreate --remove-orphans"
-    sterm = "{{.Repository}}:{{.Tag}}"
-    stamp = get_date() <> "_burij_Sicherung_"
+  def process_request(client_socket) do
+    IO.puts("processing request...\n")
 
-    [
-      "sudo tar -zcvf /srv/backups/#{stamp}config.tar.gz #{pr_dir}",
-      "sudo zip -r /srv/backups/#{stamp}volumes /srv/docker/volumes",
-      "sudo docker stop $(sudo docker ps -a -q); ",
-      "cd #{pr_dir};sudo docker compose pull",
-      "docker images --format '#{sterm}' | xargs -L1 docker pull;",
-      "cd #{pr_dir};sudo docker compose up -d #{opts}",
-      "sleep 20",
-      "sudo docker image prune -af"
-    ]
+    client_socket
+    |> read_request
+    |> create_response()
+    |> write_response(client_socket)
   end
 
-  defp execute(commands) do
-    Enum.map(commands, fn cmd ->
-      IO.puts("> #{cmd}")
+  def read_request(client_socket) do
+    {:ok, request} = :gen_tcp.recv(client_socket, 0)
+    request
+  end
 
-      case System.shell(cmd, into: IO.stream(:stdio, :line)) do
-        {_, 0} -> IO.puts("ok!")
-        {_, code} -> IO.puts("something went wrong. exit code: #{code}")
-      end
-    end)
+  def create_response(request) do
+    if String.match?(request, ~r{GET /error}) do
+      raise(request)
+    end
+
+    body = "Hello HTTP Server!"
+
+    """
+    HTTP/1.1 200 OK\r
+    Content-Type: text/html\r
+    Content-Length #{byte_size(body)}\r
+    \r
+    #{body}
+    """
+  end
+
+  def write_response(response, client_socket) do
+    :ok = :gen_tcp.send(client_socket, response)
+    IO.puts("Response:\n\n#{response}\n")
+    :gen_tcp.close(client_socket)
   end
 end
 
-Script.run()
+Script.start(4000)
